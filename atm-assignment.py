@@ -1,15 +1,3 @@
-#register
-# - username and password
-# - generate user id
-
-
-#login
-# - (username or email) and password
-
-
-#bank operations
-
-#initializing system
 import random
 
 database = {
@@ -28,18 +16,18 @@ def init():
 
     while True:
         print("Select one of the following options.")
-        haveAccount = int(input("Do you have account with us? \n 1. Yes \n 2. No \n"))
-        if(haveAccount == 1):
+        have_account = int(input("Do you have account with us? \n 1. Yes \n 2. No \n"))
+        if(have_account == 1):
             login()
             break
-        elif(haveAccount == 2):
+        elif(have_account == 2):
             print(register())
             break
         else:
             print("You selected an invalid option. Please try again.")
 
 #Login, logout, and exit
-def accountSearch(username):
+def account_search(username):
     if("@" in username):
         username = username.lower()
     for account in database.keys():
@@ -52,20 +40,20 @@ def login():
     print("*** Login ***")
 
     while True:
-        loginAccount = input("Enter username, or email \n")
-        loginPassword = input("What is your password? \n")
+        login_account = input("Enter username, or email \n")
+        login_password = input("What is your password? \n")
 
-        for accountNumber,userDetails in database.items():
-            if(accountNumber == accountSearch(loginAccount)):
-                if(userDetails["Password"] == loginPassword):
-                    bankOperation(userDetails)
+        for account_number,user_details in database.items():
+            if(account_number == account_search(login_account)):
+                if(user_details["Password"] == login_password):
+                    bank_operation(user_details)
         else:
             print("Invalid credentials. Please try again.")
 
 def logout():
     login()
 
-def exitProgram():
+def exit_program():
     print("Thank you for your business, have a great day.")
     exit()
 
@@ -73,84 +61,83 @@ def exitProgram():
 def register():
     print("*** Registration Form ***")
     email = input("What is your email address? \n").lower()
-    firstName = input("What is your first name? \n")
-    lastName = input("What is your last name \n")
+    first_name = input("What is your first name? \n")
+    last_name = input("What is your last name \n")
     username = input("Create a username \n")
     password = input("Create a password \n")
 
-    accountNumber = generateAccountNumber()
+    account_number = generate_account_number()
 
-    database[accountNumber] = {"First Name" : firstName, "Last Name" : lastName, "Email" : email,"Username" : username, "Password": password, "Balance" : 0}
-    print("Your account has been created, Your account number is %s" % accountNumber)
+    database[account_number] = {"First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Password": password, "Balance" : 0}
+    print(f"Your account has been created, Your account number is: {account_number}")
     login()
 
-def generateAccountNumber():
-    print("account number generator")
+def generate_account_number():
     return random.randrange(0000000000, 9999999999)
 
 #Bank Operations
-def bankOperation(user):
+def bank_operation(user):
     print(f"Welcome {user['First Name']} {user['Last Name']}!")
 
     while True:
         print("Please select one of the following options.")
-        selectedOption = int(input("1. Deposit. \n2. Withdrawal. \n3. Complaint \n4. Logout \n5. Exit \n"))
+        selected_option = int(input("1. Deposit. \n2. Withdrawal. \n3. Complaint \n4. Logout \n5. Exit \n"))
 
-        if(selectedOption == 1):
-            depositOperation(user)
+        if(selected_option == 1):
+            deposit_operation(user)
             
-        elif(selectedOption == 2):
-            withdrawalOperation(user)
+        elif(selected_option == 2):
+            withdrawal_operation(user)
             
-        elif(selectedOption == 3):
+        elif(selected_option == 3):
             complaint(user)
-        elif(selectedOption == 4):
+        elif(selected_option == 4):
             logout()
             
-        elif(selectedOption == 5):
-            exitProgram()
+        elif(selected_option == 5):
+            exit_program()
             
         else:
             print("Invalid option selected")
 
-def depositOperation(user):
+def deposit_operation(user):
     print(f"You have ${user['Balance']} in your account")
                 
-    amountDeposited = int(input("How much would you like to deposit? \n"))
-    user["Balance"] = user["Balance"] + amountDeposited
+    amount_deposited = int(input("How much would you like to deposit? \n"))
+    user["Balance"] = user["Balance"] + amount_deposited
     print(f"Your new balance is ${user['Balance']}")
-    anythingMoreCheck(user)
+    anything_more_check(user)
 
 
-def withdrawalOperation(user):
+def withdrawal_operation(user):
     print(f"You have ${user['Balance']} in Syour account")
 
     amountWithdrawn = int(input("How much would you like to withdraw? \n"))
     if(amountWithdrawn <= user["Balance"]):
         user["Balance"] = user["Balance"] - amountWithdrawn 
         print(f"Take your cash. Your new balance is ${user['Balance']}")
-        anythingMoreCheck(user)
+        anything_more_check(user)
     elif(amountWithdrawn > user["Balance"]):
         print(f"You do not have enough money in your account for this withdrawal, please select a number smaller than {user['Balance']}")
-        withdrawalOperation(user)
+        withdrawal_operation(user)
     else:
         print("Invalid selection, please try again.")
-        anythingMoreCheck(user)
+        anything_more_check(user)
 
 def complaint(user):
     input("What issue will you like to report? \n")
     print("Thank you for contacting us")
-    anythingMoreCheck(user) 
+    anything_more_check(user) 
 
-def anythingMoreCheck(user):
-    selectedOption = int(input("Is there anything else you would like to do today? \n 1. Yes\n 2. No \n"))
-    if(selectedOption == 1):
-        bankOperation(user)
-    elif(selectedOption == 2):
-        exitProgram()
+def anything_more_check(user):
+    selected_option = int(input("Is there anything else you would like to do today? \n 1. Yes\n 2. No \n"))
+    if(selected_option == 1):
+        bank_operation(user)
+    elif(selected_option == 2):
+        exit_program()
     else:
         print("Invalid selection, please try again.")
-        anythingMoreCheck(user)
+        anything_more_check(user)
     
 #banking system
 
