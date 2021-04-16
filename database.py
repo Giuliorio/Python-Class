@@ -3,6 +3,7 @@ import validation
 import ast
 
 user_db_path = "data/user_record/"
+auth_path = "data/auth_session/"
 #find user
 def does_email_exist(email):
     all_users = os.listdir(user_db_path)
@@ -35,9 +36,6 @@ def create(user_account_number, user_details):
         f = open(user_db_path + str(user_account_number) + ".txt", "x")
     except FileExistsError:
         print("User already exists")
-        #check contents of file before deleting
-        #if file is empty then delete
-        #delete(account_number)
     else:
         f.write(str(user_details))
     finally:
@@ -90,3 +88,12 @@ def autenticate(user_account_number, password):
             return user
     print("Invalid credentials. Please try again.")
     return False
+
+# Session Tracking
+
+def auth_create(user):
+    f = open(auth_path + str(user["Account Number"]) + ".txt", "x")
+    f.close()
+
+def auth_delete(user):
+    os.remove(auth_path + str(user["Account Number"]) + ".txt")

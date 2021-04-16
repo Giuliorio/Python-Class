@@ -32,13 +32,16 @@ def login():
             entered_password = getpass("What is your password? \n")
             user = database.autenticate(entered_account, entered_password)
             if user:
+                database.auth_create(user)
                 bank_operation(user)
 
-def logout():
+def logout(user):
+    database.auth_delete(user)
     init()
 
-def exit_program():
+def exit_program(user):
     print("Thank you for your business, have a great day.")
+    database.auth_delete(user)
     exit()
 
 # Registering Operations
@@ -83,10 +86,10 @@ def bank_operation(user):
         elif(selected_option == 3):
             complaint(user)
         elif(selected_option == 4):
-            logout()
+            logout(user)
             
         elif(selected_option == 5):
-            exit_program()
+            exit_program(user)
             
         else:
             print("Invalid option selected")
@@ -140,7 +143,7 @@ def anything_more_check(user):
             if(selected_option == 1):
                 bank_operation(user)
             elif(selected_option == 2):
-                exit_program()
+                exit_program(user)
             else:
                 print("Invalid selection, please try again.")
     

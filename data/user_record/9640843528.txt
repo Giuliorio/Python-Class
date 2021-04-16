@@ -1,0 +1,1 @@
+{'Account Number': 9640843528, 'First Name': 'Amaya', 'Last Name': 'Mae', 'Email': 'amaya@boba.com', 'Username': 'AmayaMae', 'Password': '1234', 'Balance': 1000.0}
