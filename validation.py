@@ -28,5 +28,15 @@ def is_number(input):
             print("Input should be a number")
             return False
     else:
-        print("This is a required field. If you want to go back enter $0")
+        print("This is a required field.")
         return False
+
+def pin_validation(pin):
+    if is_number(pin):
+        if len(pin) == 4:
+            return True
+        else:
+            print("Pin must be 4 digits long")
+            return False
+    print("Pin must be a number")
+    return False

@@ -80,11 +80,11 @@ def delete(user_account_number):
     finally:
         return is_delete_successful
 
-def autenticate(user_account_number, password):
+def autenticate(user_account_number, pin):
     if does_account_number_exist(user_account_number):
         user = ast.literal_eval(read(user_account_number))
 
-        if password == user["Password"]:
+        if pin == user["Pin"]:
             return user
     print("Invalid credentials. Please try again.")
     return False

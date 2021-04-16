@@ -29,8 +29,8 @@ def login():
         is_valid_account_number = validation.account_number_validation(entered_account, True)
 
         if is_valid_account_number:
-            entered_password = getpass("What is your password? \n")
-            user = database.autenticate(entered_account, entered_password)
+            entered_pin = getpass("What is your pin? \n")
+            user = database.autenticate(entered_account, entered_pin)
             if user:
                 database.auth_create(user)
                 bank_operation(user)
@@ -51,18 +51,20 @@ def register():
     first_name = input("What is your first name? \n")
     last_name = input("What is your last name \n")
     username = input("Create a username \n")
-    password = getpass("Create a password \n")
+    while True:
+        pin = getpass("Create a pin. It must be exactly 4 digits long \n")
+        if validation.pin_validation(pin):
 
-    account_number = generate_account_number()
+            account_number = generate_account_number()
 
-    is_user_created = database.create(account_number, {"Account Number" : account_number, "First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Password": password, "Balance" : 0.0})
+            is_user_created = database.create(account_number, {"Account Number" : account_number, "First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Pin": pin, "Balance" : 0.0})
 
-    if is_user_created:
-        print(f"Your account has been created, Your account number is: {account_number}")
-        login()
-    else:
-        print("Something went wrong. Please try again")
-        register()
+            if is_user_created:
+                print(f"Your account has been created, Your account number is: {account_number}")
+                login()
+            else:
+                print("Something went wrong. Please try again")
+                register()
         
 def generate_account_number():
     return random.randrange(0000000000, 9999999999)
