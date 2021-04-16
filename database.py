@@ -64,13 +64,11 @@ def read(user_account_number):
         return f.readline()
         
 #update record
-def update(user_account_number):
-    print("update user record")
-    #find user with account number
-    #fetch contents of the file
-    #update the contents of the file
-    #save the file
-    #return true
+def update(user):
+    f = open(user_db_path + str(user["Account Number"]) + ".txt", "w")
+    f.write(str(user))
+    f.close()
+    return True
 
 #delete record
 def delete(user_account_number):
@@ -91,4 +89,4 @@ def autenticate(user_account_number, password):
         if password == user["Password"]:
             return user
     print("Invalid credentials. Please try again.")
-    return False 
+    return False

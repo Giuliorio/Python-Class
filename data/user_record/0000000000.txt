@@ -1,1 +1,0 @@
-{'First Name': 'Giulio', 'Last Name': 'Riondino', 'Email': 'riondino.giulio@gmail.com', 'Username': 'GiulioR', 'Password': '1234', 'Balance': 0}

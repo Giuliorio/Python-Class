@@ -8,13 +8,16 @@ def init():
 
     while True:
         print("Select one of the following options.")
-        have_account = int(input("Do you have account with us? \n 1. Yes \n 2. No \n"))
-        if(have_account == 1):
-            login()
-        elif(have_account == 2):
-            register()
-        else:
-            print("You selected an invalid option. Please try again.")
+        have_account = input("Do you have account with us? \n 1. Yes \n 2. No \n")
+        if validation.is_number(have_account):
+            have_account = int(have_account)
+
+            if(have_account == 1):
+                login()
+            elif(have_account == 2):
+                register()
+            else:
+                print("You selected an invalid option. Please try again.")
 
 #Login, logout, and exit
 def login():
@@ -49,7 +52,7 @@ def register():
 
     account_number = generate_account_number()
 
-    is_user_created = database.create(account_number, {"First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Password": password, "Balance" : 0})
+    is_user_created = database.create(account_number, {"Account Number" : account_number, "First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Password": password, "Balance" : 0.0})
 
     if is_user_created:
         print(f"Your account has been created, Your account number is: {account_number}")
@@ -67,7 +70,9 @@ def bank_operation(user):
 
     while True:
         print("Please select one of the following options.")
-        selected_option = int(input("1. Deposit. \n2. Withdrawal. \n3. Complaint \n4. Logout \n5. Exit \n"))
+        selected_option = input("1. Deposit. \n2. Withdrawal. \n3. Complaint \n4. Logout \n5. Exit \n")
+        if validation.is_number(selected_option):
+            selected_option = int(selected_option)
 
         if(selected_option == 1):
             deposit_operation(user)
@@ -88,22 +93,33 @@ def bank_operation(user):
 
 def deposit_operation(user):
     print(f"You have ${user['Balance']} in your account")
+    while True:
+        amount_deposited = input("How much would you like to deposit? \n")
+        if validation.is_number(amount_deposited):
+            amount_deposited = float(amount_deposited)
+            break
                 
-    amount_deposited = int(input("How much would you like to deposit? \n"))
     user["Balance"] = user["Balance"] + amount_deposited
+    database.update(user)
     print(f"Your new balance is ${user['Balance']}")
     anything_more_check(user)
 
 
 def withdrawal_operation(user):
-    print(f"You have ${user['Balance']} in Syour account")
+    print(f"You have ${user['Balance']} in your account")
 
-    amountWithdrawn = int(input("How much would you like to withdraw? \n"))
-    if(amountWithdrawn <= user["Balance"]):
-        user["Balance"] = user["Balance"] - amountWithdrawn 
+    while True:
+        amount_withdrawn = input("How much would you like to withdraw? \n")
+        if validation.is_number(amount_withdrawn):
+            amount_withdrawn = float(amount_withdrawn)
+            break
+
+    if(amount_withdrawn <= user["Balance"]):
+        user["Balance"] = user["Balance"] - amount_withdrawn
+        database.update(user)
         print(f"Take your cash. Your new balance is ${user['Balance']}")
         anything_more_check(user)
-    elif(amountWithdrawn > user["Balance"]):
+    elif(amount_withdrawn > user["Balance"]):
         print(f"You do not have enough money in your account for this withdrawal, please select a number smaller than {user['Balance']}")
         withdrawal_operation(user)
     else:
@@ -116,14 +132,17 @@ def complaint(user):
     anything_more_check(user) 
 
 def anything_more_check(user):
-    selected_option = int(input("Is there anything else you would like to do today? \n 1. Yes\n 2. No \n"))
-    if(selected_option == 1):
-        bank_operation(user)
-    elif(selected_option == 2):
-        exit_program()
-    else:
-        print("Invalid selection, please try again.")
-        anything_more_check(user)
+    while True:
+        selected_option = input("Is there anything else you would like to do today? \n 1. Yes\n 2. No \n")
+        if validation.is_number(selected_option):
+            selected_option = int(selected_option)
+
+            if(selected_option == 1):
+                bank_operation(user)
+            elif(selected_option == 2):
+                exit_program()
+            else:
+                print("Invalid selection, please try again.")
     
 #banking system
 

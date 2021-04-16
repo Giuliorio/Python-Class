@@ -18,3 +18,15 @@ def account_number_validation(account_number, error=False):
         if need_error_msg:
             print("Account Number is a required field")
         return False
+
+def is_number(input):
+    if input:
+        try:
+            float(input)
+            return True
+        except ValueError:
+            print("Input should be a number")
+            return False
+    else:
+        print("This is a required field. If you want to go back enter $0")
+        return False

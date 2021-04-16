@@ -1,0 +1,1 @@
+{'Account Number': 1234567890, 'First Name': 'Giulio', 'Last Name': 'Riondino', 'Email': 'riondino.giulio@gmail.com', 'Username': 'GiulioR', 'Password': '1234', 'Balance': 500.0}
