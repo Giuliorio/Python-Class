@@ -1,15 +1,7 @@
 import random
-
-database = {
-    0000000000 : {
-        "First Name" : "Giulio",
-        "Last Name" : "Riondino",
-        "Email" : "riondino.giulio@gmail.com",
-        "Username" : "GiulioR",
-        "Password" : "1234",
-        "Balance" : 1000
-            }
-}
+from getpass import getpass
+import validation
+import database
 
 def init():
     print("Welcome to bank Python")
@@ -19,39 +11,28 @@ def init():
         have_account = int(input("Do you have account with us? \n 1. Yes \n 2. No \n"))
         if(have_account == 1):
             login()
-            break
         elif(have_account == 2):
-            print(register())
-            break
+            register()
         else:
             print("You selected an invalid option. Please try again.")
 
 #Login, logout, and exit
-def account_search(username):
-    if("@" in username):
-        username = username.lower()
-    for account in database.keys():
-        if(database[account]["Username"] == username):
-            return account
-        elif(database[account]["Email"] == username):
-            return account
-
 def login():
     print("*** Login ***")
 
     while True:
-        login_account = input("Enter username, or email \n")
-        login_password = input("What is your password? \n")
+        entered_account = input("Enter your account number \n")
 
-        for account_number,user_details in database.items():
-            if(account_number == account_search(login_account)):
-                if(user_details["Password"] == login_password):
-                    bank_operation(user_details)
-        else:
-            print("Invalid credentials. Please try again.")
+        is_valid_account_number = validation.account_number_validation(entered_account, True)
+
+        if is_valid_account_number:
+            entered_password = getpass("What is your password? \n")
+            user = database.autenticate(entered_account, entered_password)
+            if user:
+                bank_operation(user)
 
 def logout():
-    login()
+    init()
 
 def exit_program():
     print("Thank you for your business, have a great day.")
@@ -64,14 +45,19 @@ def register():
     first_name = input("What is your first name? \n")
     last_name = input("What is your last name \n")
     username = input("Create a username \n")
-    password = input("Create a password \n")
+    password = getpass("Create a password \n")
 
     account_number = generate_account_number()
 
-    database[account_number] = {"First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Password": password, "Balance" : 0}
-    print(f"Your account has been created, Your account number is: {account_number}")
-    login()
+    is_user_created = database.create(account_number, {"First Name" : first_name, "Last Name" : last_name, "Email" : email,"Username" : username, "Password": password, "Balance" : 0})
 
+    if is_user_created:
+        print(f"Your account has been created, Your account number is: {account_number}")
+        login()
+    else:
+        print("Something went wrong. Please try again")
+        register()
+        
 def generate_account_number():
     return random.randrange(0000000000, 9999999999)
 
